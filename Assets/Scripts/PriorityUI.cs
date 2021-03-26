@@ -7,7 +7,7 @@ public class PriorityUI : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject selectedUnit;
-    public Combatant selectedUnitCombatant;
+    public BuildDB selectedUnitCombatant;
     public Slider teamMateSlider;
     public Slider resourceSlider;
     public Slider enemySlider;
@@ -27,6 +27,8 @@ public class PriorityUI : MonoBehaviour
         foreach (GameObject combatant in arrayOfCombatants)
         {
             combatant.GetComponent<Combatant>().StartRound();
+            combatant.GetComponent<CombatantStateMachine>().StartRound();
+            combatant.GetComponent<BuildDB>().StartRound();
         }
         GameObject[] arrayOfResources = GameObject.FindGameObjectsWithTag("Resource");
         foreach (GameObject combatant in arrayOfResources)
@@ -42,10 +44,10 @@ public class PriorityUI : MonoBehaviour
         }
         
     } 
-    public void ResetUnitSelection(Combatant newUnitCombatant)
+    public void ResetUnitSelection(BuildDB newUnitBuildDB)
     {
-        selectedUnit = newUnitCombatant.gameObject;
-        selectedUnitCombatant = newUnitCombatant;
+        selectedUnit = newUnitBuildDB.gameObject;
+        selectedUnitCombatant = newUnitBuildDB;
         EnablePrioritiesUI();
         ResetUI();
 
@@ -60,16 +62,16 @@ public class PriorityUI : MonoBehaviour
     }
     public void ResetUI()
     {
-        if (selectedUnitCombatant.teamAction == Combatant.MoveAction.Flee) teamMateSlider.value = 0;
-        else if (selectedUnitCombatant.teamAction == Combatant.MoveAction.Ignore) teamMateSlider.value = 1;
+        if (selectedUnitCombatant.teamAction == BuildDB.MoveAction.Flee) teamMateSlider.value = 0;
+        else if (selectedUnitCombatant.teamAction == BuildDB.MoveAction.Ignore) teamMateSlider.value = 1;
         else teamMateSlider.value = 2;
 
-        if (selectedUnitCombatant.enemyAction == Combatant.MoveAction.Flee) enemySlider.value = 0;
-        else if (selectedUnitCombatant.enemyAction == Combatant.MoveAction.Ignore) enemySlider.value = 1;
+        if (selectedUnitCombatant.enemyAction == BuildDB.MoveAction.Flee) enemySlider.value = 0;
+        else if (selectedUnitCombatant.enemyAction == BuildDB.MoveAction.Ignore) enemySlider.value = 1;
         else enemySlider.value = 2;
 
-        if (selectedUnitCombatant.resourceAction == Combatant.MoveAction.Flee) resourceSlider.value = 0;
-        else if (selectedUnitCombatant.resourceAction == Combatant.MoveAction.Ignore) resourceSlider.value = 1;
+        if (selectedUnitCombatant.resourceAction == BuildDB.MoveAction.Flee) resourceSlider.value = 0;
+        else if (selectedUnitCombatant.resourceAction == BuildDB.MoveAction.Ignore) resourceSlider.value = 1;
         else resourceSlider.value = 2;
 
         resourceInputField.text = selectedUnitCombatant.resourcePriority.ToString();
@@ -104,20 +106,20 @@ public class PriorityUI : MonoBehaviour
     }
     public void SetTeamMateAction(float selection)
     {
-        if (selection == 0) selectedUnitCombatant.teamAction = Combatant.MoveAction.Flee;
-        else if (selection == 1) selectedUnitCombatant.teamAction = Combatant.MoveAction.Ignore;
-        else selectedUnitCombatant.teamAction = Combatant.MoveAction.Pursue;
+        if (selection == 0) selectedUnitCombatant.teamAction = BuildDB.MoveAction.Flee;
+        else if (selection == 1) selectedUnitCombatant.teamAction = BuildDB.MoveAction.Ignore;
+        else selectedUnitCombatant.teamAction = BuildDB.MoveAction.Pursue;
     }
     public void SetResourceAction(float selection)
     {
-        if (selection == 0) selectedUnitCombatant.resourceAction = Combatant.MoveAction.Flee;
-        else if (selection == 1) selectedUnitCombatant.resourceAction = Combatant.MoveAction.Ignore;
-        else selectedUnitCombatant.resourceAction = Combatant.MoveAction.Pursue;
+        if (selection == 0) selectedUnitCombatant.resourceAction = BuildDB.MoveAction.Flee;
+        else if (selection == 1) selectedUnitCombatant.resourceAction = BuildDB.MoveAction.Ignore;
+        else selectedUnitCombatant.resourceAction = BuildDB.MoveAction.Pursue;
     }
     public void SetEnemyAction(float selection)
     {
-        if (selection == 0) selectedUnitCombatant.enemyAction = Combatant.MoveAction.Flee;
-        else if (selection == 1) selectedUnitCombatant.enemyAction = Combatant.MoveAction.Ignore;
-        else selectedUnitCombatant.enemyAction = Combatant.MoveAction.Pursue;
+        if (selection == 0) selectedUnitCombatant.enemyAction = BuildDB.MoveAction.Flee;
+        else if (selection == 1) selectedUnitCombatant.enemyAction = BuildDB.MoveAction.Ignore;
+        else selectedUnitCombatant.enemyAction = BuildDB.MoveAction.Pursue;
     }
 }

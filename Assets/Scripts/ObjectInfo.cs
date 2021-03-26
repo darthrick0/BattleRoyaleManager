@@ -9,6 +9,7 @@ public class ObjectInfo : MonoBehaviour
     public bool combatant;
     public bool resource;
     public int team;
+    public bool isNothing;
 
     public TextMeshProUGUI infoText;
 

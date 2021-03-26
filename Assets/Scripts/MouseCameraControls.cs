@@ -22,7 +22,6 @@ public class MouseCameraControls : MonoBehaviour
 
         if (Input.GetMouseButtonDown(2))
         {
-            Debug.Log("mouse2Down");
             storeLocationForDrag = Input.mousePosition;
             deltaPos = 1;
         }
@@ -31,10 +30,7 @@ public class MouseCameraControls : MonoBehaviour
         if (Input.GetMouseButton(2))
         {
             var pos = thisCam.ScreenToViewportPoint(Input.mousePosition - storeLocationForDrag)*deltaPos;
-            Debug.Log("mouse2");
-            Debug.Log(pos);
             var move = new Vector3(pos.x * dragSpeed, pos.y * dragSpeed, 0);
-            Debug.Log(move);
             transform.Translate(-move, Space.World);
         }
     

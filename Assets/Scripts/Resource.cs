@@ -1,11 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using Random = UnityEngine.Random;
 
 public class Resource : MonoBehaviour
 {
-    public bool hasBeenLooted;
-    public bool hasLootLeft;
+    public bool hasBeenLooted = false;
+    public bool hasLootLeft = true;
 
     public GameObject knife;
     public GameObject pistol;
@@ -14,19 +17,19 @@ public class Resource : MonoBehaviour
     public GameObject healthPack;
     public GameObject bodyArmor;
     public GameObject nothing;
-
+    
     public GameObject determinedLoot;
-    public List<GameObject> combatantKnowledgeOfLoot;
+    [SerializeField] List<GameObject> combatantKnowledgeOfLoot;
 
     public GameObject LootResource()
     {
-        if (hasBeenLooted != true)
+        if (hasBeenLooted == false)
         {
             determinedLoot.SetActive(true);
+            hasBeenLooted = true;
             return determinedLoot; 
         }
-
-        else return null;
+        return nothing;
     }
 
     public void AddGameObjectToKnowledgeOfLoot(GameObject combatantWithKnowledge)
@@ -34,9 +37,14 @@ public class Resource : MonoBehaviour
         combatantKnowledgeOfLoot.Add(combatantWithKnowledge);
     }
 
+    public bool DoesCombatantKnowOfLoot(GameObject combatant)
+    {
+        if (combatantKnowledgeOfLoot.Contains(combatant)) return false;
+        return true;
+    }
+
     public void ConfirmLootTaken()
     {
-        hasBeenLooted = true;
         GetComponent<ObjectInfo>().ChangeTextToEmpty();
     }
 
@@ -50,7 +58,7 @@ public class Resource : MonoBehaviour
 
     private GameObject GetLootFromTable()
     {
-        var rollRandomNumber = Random.Range(0, 100f);
+        float rollRandomNumber = Random.Range(0, 100f);
         if (rollRandomNumber <= 15)       //15%   0-15
         {
             return healthPack;
